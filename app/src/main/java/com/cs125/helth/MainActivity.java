@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     public void register() {
         String confirmation = "Registering";
         status.setText(confirmation);
-//        finish();
+        finish();
 
-//        Intent RegisterPage = new Intent(MainActivity.this, RegisterActivity.class);
-//        startActivity(RegisterPage);
+        Intent PersonalInfoPage = new Intent(MainActivity.this, PersonalInfoActivity.class);
+        startActivity(PersonalInfoPage);
     }
 }
