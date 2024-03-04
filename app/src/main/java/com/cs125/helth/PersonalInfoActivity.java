@@ -22,7 +22,6 @@ public class PersonalInfoActivity extends AppCompatActivity {
     private Button back_button;
 
     private Button next_button;
-    private TextView status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -3,6 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/next_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="17dp"
+        android:text="Next" />
+
     <TextView
         android:id="@+id/goals"
         android:layout_width="wrap_content"
@@ -58,13 +70,5 @@
             android:hint="Target Goal: Weight" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Next"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
