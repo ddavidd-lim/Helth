@@ -4,67 +4,63 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/goals"
+        android:id="@+id/daily_check_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:text="Daily Check-in"
+        android:textSize="24sp"
         android:layout_marginTop="55dp"
-        android:text="Goals"
-        android:textSize="24sp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="Back" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="401dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/current_sleep"
+            android:id="@+id/food"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginTop="16dp"
-            android:hint="Current Daily Average Sleep" />
+            android:hint="Food" />
 
         <EditText
-            android:id="@+id/target_sleep"
+            android:id="@+id/sleep"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginTop="16dp"
-            android:hint="Target Goal: Hours of Sleep" />
+            android:hint="Hours of Sleep Last Night" />
 
         <EditText
-            android:id="@+id/current_weight"
+            android:id="@+id/calories_burned"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginTop="16dp"
-            android:hint="Current Weight" />
-
-        <EditText
-            android:id="@+id/target_weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Target Goal: Weight" />
+            android:hint="Calories Burned Through Activity" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/next_button"
+        android:id="@+id/submit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="51dp"
+        android:text="Submit" />
 
 </RelativeLayout>

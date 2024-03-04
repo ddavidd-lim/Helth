@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Helth</string>
+    <string-array name="spinner_options_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+        <!-- Add more options as needed -->
+    </string-array>
 </resources>
