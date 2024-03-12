@@ -1,192 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PersonalInfoActivity">
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="256dp"
-        android:layout_height="49dp"
-        android:text="Personal Information"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="170dp"
-        android:layout_height="454dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent">
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Information"
+            android:textSize="24sp" />
 
         <EditText
-            android:id="@+id/firstName"
+            android:id="@+id/firstname"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="First Name" />
 
         <EditText
-            android:id="@+id/lastName"
+            android:id="@+id/lastname"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="Last Name" />
 
         <EditText
             android:id="@+id/age"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="Age" />
+
+        <EditText
+            android:id="@+id/height_ft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Height (Ft)" />
+
+        <EditText
+            android:id="@+id/height_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Height (In)" />
 
         <EditText
             android:id="@+id/dob"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="Date of Birth (MM/DD/YYYY)" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/gender"
+            android:id="@+id/home"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/homeAddress"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="Home Address" />
 
         <EditText
             android:id="@+id/work"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
+            android:layout_height="wrap_content"
+            android:hint="Work Address" />
 
-        <EditText
-            android:id="@+id/place1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
-
-        <EditText
-            android:id="@+id/place2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:autoText="false"
-            android:ems="10"
-            android:inputType="text" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="183dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="116dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="First Name"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Last Name"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Age"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Date of Birth"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Gender"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Home Address"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Work Address"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Common Place"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Common Place"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:id="@+id/next_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.411" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="17dp"
+        android:text="Next" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
