@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.database.Cursor;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -50,9 +52,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
-        finish();
-        Intent PersonalInfoPage = new Intent(LoginActivity.this, WeeksActivity.class);
-        startActivity(PersonalInfoPage);
+        String username = email.getText().toString();
+        String passwordText = password.getText().toString();
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper.openDatabase();
+        Cursor cursor = databaseHelper.query("SELECT * FROM users WHERE email=? AND password=?", new String[]{username, passwordText});
+        if (cursor.moveToFirst()) {
+            finish();
+            Intent PersonalInfoPage = new Intent(LoginActivity.this, WeeksActivity.class);
+            startActivity(PersonalInfoPage);
+        } else {
+            Toast.makeText(LoginActivity.this, "Invalid login. Please try again.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void register() {
