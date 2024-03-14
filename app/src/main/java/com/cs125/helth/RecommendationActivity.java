@@ -14,7 +14,7 @@ public class RecommendationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recommendation);
 
         Button back = (Button) findViewById(R.id.back_button);
-        back.setOnClickListener(view -> calculate());
+        back.setOnClickListener(view -> back());
 
         Button calculate = (Button) findViewById(R.id.calculate_button);
         calculate.setOnClickListener(view -> calculate());
