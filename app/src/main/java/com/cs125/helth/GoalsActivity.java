@@ -2,7 +2,6 @@ package com.cs125.helth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Person;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -35,7 +34,7 @@ public class GoalsActivity extends AppCompatActivity {
 
     public void next() {
         finish();
-        Intent WeeksPage = new Intent(GoalsActivity.this, WeeksActivity.class);
+        Intent WeeksPage = new Intent(GoalsActivity.this, WelcomeActivity.class);
         startActivity(WeeksPage);
     }
 

@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         Cursor cursor = databaseHelper.query("SELECT * FROM users WHERE email=? AND password=?", new String[]{username, passwordText});
         if (cursor.moveToFirst()) {
             finish();
-            Intent PersonalInfoPage = new Intent(LoginActivity.this, WeeksActivity.class);
+            Intent PersonalInfoPage = new Intent(LoginActivity.this, WelcomeActivity.class);
             startActivity(PersonalInfoPage);
         } else {
             Toast.makeText(LoginActivity.this, "Invalid login. Please try again.", Toast.LENGTH_SHORT).show();
