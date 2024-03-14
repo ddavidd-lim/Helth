@@ -27,7 +27,7 @@ public class RecommendationActivity extends AppCompatActivity {
     }
     public void calculate() {
         finish();
-        Intent NewPage = new Intent(RecommendationActivity.this, WelcomeActivity.class);
+        Intent NewPage = new Intent(RecommendationActivity.this, ResultsActivity.class);
         startActivity(NewPage);
     }
 }
