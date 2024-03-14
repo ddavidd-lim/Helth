@@ -14,6 +14,9 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Button logout = (Button) findViewById(R.id.logout_button);
         logout.setOnClickListener(view -> logout());
+
+        Button recommend = (Button) findViewById(R.id.recommend_button);
+        recommend.setOnClickListener(view -> recommend());
     }
 
     public void logout() {
@@ -21,4 +24,10 @@ public class WelcomeActivity extends AppCompatActivity {
         Intent PersonalInfoPage = new Intent(WelcomeActivity.this, LoginActivity.class);
         startActivity(PersonalInfoPage);
     }
+    public void recommend() {
+        finish();
+        Intent PersonalInfoPage = new Intent(WelcomeActivity.this, RecommendationActivity.class);
+        startActivity(PersonalInfoPage);
+    }
+
 }
