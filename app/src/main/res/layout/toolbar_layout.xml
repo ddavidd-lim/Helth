@@ -24,13 +24,4 @@
         android:textSize="20sp"
         android:layout_gravity="center" />
 
-    <ImageButton
-        android:id="@+id/right_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_right_icon"
-        android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/right_icon"
-        android:layout_gravity="end" />
-
 </androidx.appcompat.widget.Toolbar>

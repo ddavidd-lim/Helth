@@ -16,7 +16,7 @@
             android:name=".RecommendationActivity"
             android:exported="false" />
         <activity
-            android:name=".WeeksActivity"
+            android:name=".WelcomeActivity"
             android:exported="false" />
         <activity
             android:name=".CheckinActivity"

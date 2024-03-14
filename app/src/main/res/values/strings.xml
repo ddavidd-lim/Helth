@@ -6,5 +6,6 @@
         <item>Other</item>
         <!-- Add more options as needed -->
     </string-array>
-    <string name="main_page">Main Page</string>
+    <string name="main_page">Welcome User</string>
+    <string name="back_button">Logout</string>
 </resources>
