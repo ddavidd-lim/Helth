@@ -2,11 +2,19 @@ package com.cs125.helth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class WelcomeActivity extends AppCompatActivity {
+    @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +25,45 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Button recommend = (Button) findViewById(R.id.recommend_button);
         recommend.setOnClickListener(view -> recommend());
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper.openDatabase();
+        Cursor cursor = databaseHelper.query("SELECT * FROM activity " +
+                "WHERE total_time > '0:00:00' AND total_distance_miles > '0.5'" + // Filter out rows where total_time is 0
+                "ORDER BY date_of_activity DESC " +
+                "LIMIT 10", new String[]{});
+        LinearLayout list = findViewById(R.id.list);
+        while (cursor.moveToNext()) {
+            // Inflate the row layout
+            View row = getLayoutInflater().inflate(R.layout.welcomelist_row, list, false);
+
+            // Get references to the TextViews
+            TextView distanceView = row.findViewById(R.id.distance);
+            TextView paceView = row.findViewById(R.id.pace);
+            TextView dateView = row.findViewById(R.id.date);
+
+            // Set the text of the TextViews based on the cursor
+            String string_time = cursor.getString(cursor.getColumnIndex("total_time"));
+            String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
+
+            float time = parseTime(string_time);
+            float distance = parseDistance(string_distance);
+            String distanceDisplay = distance + " Mile Run";
+
+            float pace_num = (float) time / distance;
+
+            // Round the result to two decimal places
+            String pace = String.format("%.2f", pace_num);
+            String paceDisplay = "Pace: " + pace + "/mile";
+
+            distanceView.setText(distanceDisplay);
+            paceView.setText(paceDisplay);
+            dateView.setText(cursor.getString(cursor.getColumnIndex("date_of_activity")));
+
+            // Add the row to the LinearLayout
+            list.addView(row);
+        }
+        cursor.close();
     }
 
     public void logout() {
@@ -30,4 +77,20 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivity(PersonalInfoPage);
     }
 
+    public float parseTime(String timeString) {
+        float minutes = 0; // Default value if parsing fails
+
+        // Split the time string into components using ":"
+        String[] timeComponents = timeString.split(":");
+        minutes = Float.parseFloat(timeComponents[1]);
+
+        return minutes;
+    }
+
+    public float parseDistance(String distanceString) {
+        int distance = 0; // Default value if parsing fails
+        float distanceFloat = Float.parseFloat(distanceString);
+
+        return Float.parseFloat(String.format("%.2f", distanceFloat));
+    }
 }
