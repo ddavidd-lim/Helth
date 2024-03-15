@@ -22,9 +22,6 @@
             android:name=".WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".CheckinActivity"
-            android:exported="false" />
-        <activity
             android:name=".GoalsActivity"
             android:exported="false" />
         <activity
