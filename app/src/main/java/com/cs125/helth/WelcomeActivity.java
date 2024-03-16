@@ -56,9 +56,12 @@ public class WelcomeActivity extends AppCompatActivity {
 
 
             // Round the result to two decimal places
-            String pace = String.format("%.2f", pace_num);
-            String paceDisplay = "Pace: " + pace + "/mile";
-            new_run.pace = parseFloat(pace);
+            String str_pace = String.format("%.2f", pace_num);
+            float pace = parseFloat(str_pace);
+
+            int minutes = (int) pace;
+            int seconds = (int) ((pace - minutes) * 60);
+            new_run.pace = parseFloat(String.format("%d.%02d", minutes, seconds));
             // Add the row to the LinearLayout
             runs.add(new_run);
         }
