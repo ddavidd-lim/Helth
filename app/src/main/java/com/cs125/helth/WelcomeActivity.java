@@ -48,17 +48,17 @@ public class WelcomeActivity extends AppCompatActivity {
             String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
 
             float time = parseTime(string_time);
-            float distance = parseDistance(string_distance);
+            float distance = parseFloat(string_distance);
             new_run.total_time = time;
             new_run.total_distance = distance;
 
             float pace_num = (float) time / distance;
-            new_run.pace = pace_num;
+
 
             // Round the result to two decimal places
             String pace = String.format("%.2f", pace_num);
             String paceDisplay = "Pace: " + pace + "/mile";
-
+            new_run.pace = parseFloat(pace);
             // Add the row to the LinearLayout
             runs.add(new_run);
         }
@@ -90,10 +90,9 @@ public class WelcomeActivity extends AppCompatActivity {
         return minutes;
     }
 
-    public float parseDistance(String distanceString) {
-        int distance = 0; // Default value if parsing fails
-        float distanceFloat = Float.parseFloat(distanceString);
+    public float parseFloat(String str_float) {
+        float newFloat = Float.parseFloat(str_float);
 
-        return Float.parseFloat(String.format("%.2f", distanceFloat));
+        return Float.parseFloat(String.format("%.2f", newFloat));
     }
 }
