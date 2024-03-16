@@ -25,20 +25,15 @@
         android:text="Logout"
         android:layout_alignParentEnd="true" />
 
-    <ScrollView
+    <ListView
+        android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="529dp"
-        android:layout_below="@id/title"
-        android:layout_marginTop="35dp">
-
-        <LinearLayout
-            android:id="@+id/list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/title"
+        android:layout_above="@+id/recommend_button"
+        android:padding="20dp">
+    </ListView>
 
     <Button
         android:id="@+id/recommend_button"

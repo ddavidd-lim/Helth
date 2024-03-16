@@ -10,8 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class WelcomeActivity extends AppCompatActivity {
     @SuppressLint("Range")
@@ -32,38 +35,37 @@ public class WelcomeActivity extends AppCompatActivity {
                 "WHERE total_time > '0:00:00' AND total_distance_miles > '0.5'" + // Filter out rows where total_time is 0
                 "ORDER BY date_of_activity DESC " +
                 "LIMIT 10", new String[]{});
-        LinearLayout list = findViewById(R.id.list);
+
+        ArrayList<Run> runs = new ArrayList<>();
         while (cursor.moveToNext()) {
-            // Inflate the row layout
-            View row = getLayoutInflater().inflate(R.layout.welcomelist_row, list, false);
-
-            // Get references to the TextViews
-            TextView distanceView = row.findViewById(R.id.distance);
-            TextView paceView = row.findViewById(R.id.pace);
-            TextView dateView = row.findViewById(R.id.date);
-
+            Run new_run = new Run();
             // Set the text of the TextViews based on the cursor
+            new_run.a_id = cursor.getInt(cursor.getColumnIndex("aid"));
+            new_run.u_id = cursor.getInt(cursor.getColumnIndex("uid"));
+            new_run.average_heart_rate = cursor.getInt(cursor.getColumnIndex("average_heart_rate"));
             String string_time = cursor.getString(cursor.getColumnIndex("total_time"));
             String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
 
             float time = parseTime(string_time);
             float distance = parseDistance(string_distance);
-            String distanceDisplay = distance + " Mile Run";
+            new_run.total_time = time;
+            new_run.total_distance = distance;
 
             float pace_num = (float) time / distance;
+            new_run.pace = pace_num;
 
             // Round the result to two decimal places
             String pace = String.format("%.2f", pace_num);
             String paceDisplay = "Pace: " + pace + "/mile";
 
-            distanceView.setText(distanceDisplay);
-            paceView.setText(paceDisplay);
-            dateView.setText(cursor.getString(cursor.getColumnIndex("date_of_activity")));
-
             // Add the row to the LinearLayout
-            list.addView(row);
+            runs.add(new_run);
         }
         cursor.close();
+
+        RunActivityViewAdapter adapter = new RunActivityViewAdapter(this, runs);
+        ListView listView = findViewById(R.id.list);
+        listView.setAdapter(adapter);
     }
 
     public void logout() {
