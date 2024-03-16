@@ -43,6 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
             new_run.a_id = cursor.getInt(cursor.getColumnIndex("aid"));
             new_run.u_id = cursor.getInt(cursor.getColumnIndex("uid"));
             new_run.average_heart_rate = cursor.getInt(cursor.getColumnIndex("average_heart_rate"));
+            new_run.date = cursor.getString(cursor.getColumnIndex("date_of_activity"));
             String string_time = cursor.getString(cursor.getColumnIndex("total_time"));
             String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
 

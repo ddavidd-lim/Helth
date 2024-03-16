@@ -16,6 +16,7 @@
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="3 Mile Run"
             android:textColor="#000000"
             android:textSize="16sp" />
@@ -25,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:text="Pace: 6:00/mile"
             android:textColor="#000000"
             android:textSize="16sp" />
