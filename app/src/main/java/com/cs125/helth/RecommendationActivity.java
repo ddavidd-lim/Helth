@@ -14,17 +14,23 @@ import android.widget.TextView;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity {
 
-    private Spinner difficultySpinner;
+    List<DataPoint> distanceData;
+    List<DataPoint> timeData;
+
+    double average_heart_rate;
+    double diff_scaling;
     @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendation);
 
-        difficultySpinner = findViewById(R.id.difficulty_spinner);
+        // Get buttons
+        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
 
         Button back = (Button) findViewById(R.id.back_button);
         back.setOnClickListener(view -> back());
@@ -32,48 +38,45 @@ public class RecommendationActivity extends AppCompatActivity {
         Button calculate = (Button) findViewById(R.id.calculate_button);
         calculate.setOnClickListener(view -> calculate());
 
+        // Query Database
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         databaseHelper.openDatabase();
         Cursor cursor = databaseHelper.query("SELECT * FROM activity " +
                 "WHERE total_time > '0:00:00' AND total_distance_miles > '0.5'" + // Filter out rows where total_time is 0
                 "ORDER BY date_of_activity DESC " +
-                "LIMIT 6", new String[]{});
-        ArrayList<float[]> tuples = new ArrayList<>();
-        float[] weights = {10.5f, 20.3f, 15.8f};
+                "LIMIT 10", new String[]{});
+        distanceData = new ArrayList<>();
+        timeData = new ArrayList<>();
+        double heartrate_sum = 0.0;
         while (cursor.moveToNext()) {
             String string_time = cursor.getString(cursor.getColumnIndex("total_time"));
             String string_heartrate = cursor.getString(cursor.getColumnIndex("average_heart_rate"));
             String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
 
-            float time_num = parseTime(string_time);
-            float heart_rate = parsefloats(string_heartrate);
-            float distance = parsefloats(string_distance);
-            float pace_num = (float) time_num / distance;
+            // Add data from last 6 runs to training data
+            double heart_rate = parseDouble(string_heartrate);
+            heartrate_sum += heart_rate;
+            double time_num = parseTime(string_time);
+            double distance = parseDouble(string_distance);
+            distanceData.add(new DataPoint(heart_rate, distance));
+            timeData.add(new DataPoint(heart_rate, time_num));
+
+            // Difficulty scaling
             String difficulty = difficultySpinner.getSelectedItem().toString();
-            float diff_num = 0.0F;
+
             switch (difficulty) {
                 case "Easy":
-                    diff_num = 1.0F;
+                    diff_scaling = 0.75;
                     break;
                 case "Medium":
-                    diff_num = 2.0F;
+                    diff_scaling = 1.0;
                     break;
                 case "Hard":
-                    diff_num = 3.0F;
+                    diff_scaling = 1.25;
                     break;
             }
-
-            float[] tuple = {time_num, heart_rate, distance, diff_num};
-//            String selectedItem = difficultySpinner.getSelectedItem().toString();
-//
-//            String pace = String.format("%.2f", pace_num);
-//            String paceDisplay = "Pace: " + pace + "/mile";
-//
-//            String distanceDisplay = distance + " Mile Run";
-//
-//            String time = String.format("%.2f", time_num);
-//            String timeDisplay = time + " Mile Run";
         }
+        average_heart_rate = heartrate_sum /10;
         cursor.close();
     }
 
@@ -83,26 +86,34 @@ public class RecommendationActivity extends AppCompatActivity {
         startActivity(NewPage);
     }
     public void calculate() {
+        KNNRegressor distanceKNN = new KNNRegressor(distanceData, 3);
+        KNNRegressor timeKNN = new KNNRegressor(timeData, 3);
+
+        double target_heart_rate = average_heart_rate * diff_scaling;
+        double predictedDistance = distanceKNN.predict(target_heart_rate);
+        double predictedTime = timeKNN.predict(target_heart_rate);
+        double predictedPace = predictedTime / predictedDistance;
         finish();
         Intent NewPage = new Intent(RecommendationActivity.this, ResultsActivity.class);
-
-
+        NewPage.putExtra("predictedDistance", predictedDistance);
+        NewPage.putExtra("predictedTime", predictedTime);
+        NewPage.putExtra("predictedPace", predictedPace);
         startActivity(NewPage);
     }
 
-    public float parseTime(String timeString) {
-        float minutes = 0; // Default value if parsing fails
+    public double parseTime(String timeString) {
+        double minutes = 0; // Default value if parsing fails
 
         // Split the time string into components using ":"
         String[] timeComponents = timeString.split(":");
-        minutes = Float.parseFloat(timeComponents[1]);
+        minutes = Double.parseDouble(timeComponents[1]);
 
         return minutes;
     }
 
-    public float parsefloats(String str_float) {
-        float val = Float.parseFloat(str_float);
+    public double parseDouble(String str_double) {
+        double newDouble = Double.parseDouble(str_double);
 
-        return Float.parseFloat(String.format("%.2f", val));
+        return Double.parseDouble(String.format("%.2f", newDouble));
     }
 }

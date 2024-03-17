@@ -30,13 +30,13 @@ public class WelcomeActivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         uid = intent.getIntExtra("uid", -1);
 
-        TextView title = (TextView) findViewById(R.id.title);
+        TextView title = findViewById(R.id.title);
         title.setText("Welcome " + name);
 
-        Button logout = (Button) findViewById(R.id.logout_button);
+        Button logout = findViewById(R.id.logout_button);
         logout.setOnClickListener(view -> logout());
 
-        Button recommend = (Button) findViewById(R.id.recommend_button);
+        Button recommend = findViewById(R.id.recommend_button);
         recommend.setOnClickListener(view -> recommend());
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
@@ -58,27 +58,26 @@ public class WelcomeActivity extends AppCompatActivity {
             String string_time = cursor.getString(cursor.getColumnIndex("total_time"));
             String string_distance = cursor.getString(cursor.getColumnIndex("total_distance_miles"));
 
-            float time = parseTime(string_time);
-            float distance = parseFloat(string_distance);
+            double time = parseTime(string_time);
+            double distance = parseDouble(string_distance);
             new_run.total_time = time;
             new_run.total_distance = distance;
 
-            float pace_num = (float) time / distance;
-
+            double pace_num = time / distance;
 
             // Round the result to two decimal places
             String str_pace = String.format("%.2f", pace_num);
-            float pace = parseFloat(str_pace);
+            double pace = parseDouble(str_pace);
 
             int minutes = (int) pace;
             int seconds = (int) ((pace - minutes) * 60);
-            new_run.pace = parseFloat(String.format("%d.%02d", minutes, seconds));
+            new_run.pace = parseDouble(String.format("%d.%02d", minutes, seconds));
             // Add the row to the LinearLayout
             runs.add(new_run);
         }
         cursor.close();
         if(runs.size() == 0) {
-            TextView msg = (TextView) findViewById(R.id.recent_activities);
+            TextView msg = findViewById(R.id.recent_activities);
             msg.setText("No recent activities.");
             recommend.setText("Import Activities");
             recommend.setOnClickListener(view -> importData() );
@@ -118,19 +117,19 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivity(WelcomeActivity);
     }
 
-    public float parseTime(String timeString) {
-        float minutes = 0; // Default value if parsing fails
+    public double parseTime(String timeString) {
+        double minutes = 0; // Default value if parsing fails
 
         // Split the time string into components using ":"
         String[] timeComponents = timeString.split(":");
-        minutes = Float.parseFloat(timeComponents[1]);
+        minutes = Double.parseDouble(timeComponents[1]);
 
         return minutes;
     }
 
-    public float parseFloat(String str_float) {
-        float newFloat = Float.parseFloat(str_float);
+    public double parseDouble(String str_double) {
+        double newDouble = Double.parseDouble(str_double);
 
-        return Float.parseFloat(String.format("%.2f", newFloat));
+        return Double.parseDouble(String.format("%.2f", newDouble));
     }
 }

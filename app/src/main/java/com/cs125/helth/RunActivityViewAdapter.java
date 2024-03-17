@@ -31,6 +31,15 @@ public class RunActivityViewAdapter extends ArrayAdapter<Run> {
         this.runs = runs;
     }
 
+    @SuppressLint("DefaultLocale")
+    public String convertToTime(double value){
+        int minutes = (int) value;
+        int seconds = (int) ((value - minutes) * 60);
+
+        // Format the pace in minute:second format
+        return String.format("%d:%02d", minutes, seconds);
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -55,9 +64,10 @@ public class RunActivityViewAdapter extends ArrayAdapter<Run> {
         // Populate the data from the data object via the viewHolder object
         // into the template view.
         viewHolder.date.setText(String.valueOf(run.date));
-        viewHolder.pace.setText(String.valueOf(run.pace) + "/Mile");
+        viewHolder.pace.setText(convertToTime(run.pace) + "/Mile");
         viewHolder.total_distance.setText(String.valueOf(run.total_distance) + " Miles");
         // Return the completed view to render on screen
         return convertView;
     }
+
 }
