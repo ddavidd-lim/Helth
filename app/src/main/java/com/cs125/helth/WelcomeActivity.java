@@ -23,6 +23,13 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        int uid = intent.getIntExtra("uid", -1);
+
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("Welcome " + name);
+
         Button logout = (Button) findViewById(R.id.logout_button);
         logout.setOnClickListener(view -> logout());
 
@@ -32,7 +39,8 @@ public class WelcomeActivity extends AppCompatActivity {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         databaseHelper.openDatabase();
         Cursor cursor = databaseHelper.query("SELECT * FROM activity " +
-                "WHERE total_time > '0:00:00' AND total_distance_miles > '0.5'" + // Filter out rows where total_time is 0
+                "WHERE uid = " + uid
+                + " AND total_time > '0:00:00' AND total_distance_miles > '0.5'" + // Filter out rows where total_time is 0
                 "ORDER BY date_of_activity DESC " +
                 "LIMIT 10", new String[]{});
 
@@ -66,6 +74,12 @@ public class WelcomeActivity extends AppCompatActivity {
             runs.add(new_run);
         }
         cursor.close();
+        if(runs.size() == 0) {
+            TextView msg = (TextView) findViewById(R.id.recent_activities);
+            msg.setText("No recent activities.");
+            recommend.setText("Import Activities");
+            recommend.setOnClickListener(view -> import());
+        }
 
         RunActivityViewAdapter adapter = new RunActivityViewAdapter(this, runs);
         ListView listView = findViewById(R.id.list);
@@ -80,6 +94,12 @@ public class WelcomeActivity extends AppCompatActivity {
     public void recommend() {
         finish();
         Intent PersonalInfoPage = new Intent(WelcomeActivity.this, RecommendationActivity.class);
+        startActivity(PersonalInfoPage);
+    }
+
+    public void import() {
+        finish();
+        Intent PersonalInfoPage = new Intent(WelcomeActivity.this, ImportActivity.class);
         startActivity(PersonalInfoPage);
     }
 

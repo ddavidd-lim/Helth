@@ -14,6 +14,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
+    private EditText new_name;
     private EditText new_email;
     private EditText new_password;
     private EditText confirm_password;
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        new_name = (EditText) findViewById(R.id.name);
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         new_email = (EditText) findViewById(R.id.new_email);
@@ -59,8 +60,13 @@ public class LoginActivity extends AppCompatActivity {
         databaseHelper.openDatabase();
         Cursor cursor = databaseHelper.query("SELECT * FROM users WHERE email=? AND password=?", new String[]{username, passwordText});
         if (cursor.moveToFirst()) {
-            finish();
+            String name = cursor.getString(cursor.getColumnIndex("name"));
+            int uid = cursor.getInt(cursor.getColumnIndex("uid"));
+
             Intent PersonalInfoPage = new Intent(LoginActivity.this, WelcomeActivity.class);
+            PersonalInfoPage.putExtra("name", name);
+            PersonalInfoPage.putExtra("uid", uid);
+            finish();
             startActivity(PersonalInfoPage);
         } else {
             Toast.makeText(LoginActivity.this, "Invalid login. Please try again.", Toast.LENGTH_SHORT).show();
@@ -68,8 +74,33 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void register() {
-        finish();
-        Intent PersonalInfoPage = new Intent(LoginActivity.this, PersonalInfoActivity.class);
-        startActivity(PersonalInfoPage);
+        String newName = new_name.getText().toString();
+        String newEmail = new_email.getText().toString();
+        String newPassword = new_password.getText().toString();
+        String confirmPassword = confirm_password.getText().toString();
+
+        if (!newPassword.equals(confirmPassword)) {
+            Toast.makeText(LoginActivity.this, "Passwords are mismatching.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper.openDatabase();
+        Cursor cursor = databaseHelper.query("SELECT * FROM users WHERE email=?", new String[]{newEmail});
+        if (cursor.moveToFirst()) {
+            Toast.makeText(LoginActivity.this, "Email is already used.", Toast.LENGTH_SHORT).show();
+        } else {
+            long uid = databaseHelper.insertUser(newName, newEmail, newPassword);
+            if (uid != -1) {
+                finish();
+                Intent PersonalInfoPage = new Intent(LoginActivity.this, PersonalInfoActivity.class);
+                PersonalInfoPage.putExtra("name", newName);
+                PersonalInfoPage.putExtra("email", newEmail);
+                PersonalInfoPage.putExtra("password", newPassword);
+                startActivity(PersonalInfoPage);
+            } else {
+                Toast.makeText(LoginActivity.this, "Failed to register. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
