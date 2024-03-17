@@ -47,11 +47,14 @@ public class ResultsActivity extends AppCompatActivity {
     public void back() {
         finish();
         Intent NewPage = new Intent(ResultsActivity.this, RecommendationActivity.class);
+        transferName(NewPage);
         startActivity(NewPage);
+
     }
     public void home() {
         finish();
         Intent NewPage = new Intent(ResultsActivity.this, WelcomeActivity.class);
+        transferName(NewPage);
         startActivity(NewPage);
     }
 
@@ -62,5 +65,13 @@ public class ResultsActivity extends AppCompatActivity {
 
         // Format the pace in minute:second format
         return String.format("%d:%02d", minutes, seconds);
+    }
+
+    public void transferName(Intent NewPage){
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        int uid = intent.getIntExtra("uid", -1);
+        NewPage.putExtra("name", name);
+        NewPage.putExtra("uid", uid);
     }
 }

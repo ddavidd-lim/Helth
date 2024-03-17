@@ -96,6 +96,8 @@ public class WelcomeActivity extends AppCompatActivity {
     public void recommend() {
         finish();
         Intent PersonalInfoPage = new Intent(WelcomeActivity.this, RecommendationActivity.class);
+        PersonalInfoPage.putExtra("name", name);
+        PersonalInfoPage.putExtra("uid", uid);
         startActivity(PersonalInfoPage);
     }
 

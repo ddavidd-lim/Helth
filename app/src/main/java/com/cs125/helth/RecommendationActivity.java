@@ -83,6 +83,7 @@ public class RecommendationActivity extends AppCompatActivity {
     public void back() {
         finish();
         Intent NewPage = new Intent(RecommendationActivity.this, WelcomeActivity.class);
+        transferName(NewPage);
         startActivity(NewPage);
     }
     public void calculate() {
@@ -98,6 +99,7 @@ public class RecommendationActivity extends AppCompatActivity {
         NewPage.putExtra("predictedDistance", predictedDistance);
         NewPage.putExtra("predictedTime", predictedTime);
         NewPage.putExtra("predictedPace", predictedPace);
+        transferName(NewPage);
         startActivity(NewPage);
     }
 
@@ -115,5 +117,13 @@ public class RecommendationActivity extends AppCompatActivity {
         double newDouble = Double.parseDouble(str_double);
 
         return Double.parseDouble(String.format("%.2f", newDouble));
+    }
+
+    public void transferName(Intent NewPage){
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        int uid = intent.getIntExtra("uid", -1);
+        NewPage.putExtra("name", name);
+        NewPage.putExtra("uid", uid);
     }
 }
