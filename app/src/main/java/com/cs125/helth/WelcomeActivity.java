@@ -17,6 +17,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class WelcomeActivity extends AppCompatActivity {
+    String name;
+    int uid;
+
     @SuppressLint("Range")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +27,8 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra("name");
-        int uid = intent.getIntExtra("uid", -1);
+        name = intent.getStringExtra("name");
+        uid = intent.getIntExtra("uid", -1);
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText("Welcome " + name);
@@ -78,7 +81,7 @@ public class WelcomeActivity extends AppCompatActivity {
             TextView msg = (TextView) findViewById(R.id.recent_activities);
             msg.setText("No recent activities.");
             recommend.setText("Import Activities");
-            recommend.setOnClickListener(view -> import());
+            recommend.setOnClickListener(view -> importData() );
         }
 
         RunActivityViewAdapter adapter = new RunActivityViewAdapter(this, runs);
@@ -97,10 +100,22 @@ public class WelcomeActivity extends AppCompatActivity {
         startActivity(PersonalInfoPage);
     }
 
-    public void import() {
+    public void importData() {
         finish();
-        Intent PersonalInfoPage = new Intent(WelcomeActivity.this, ImportActivity.class);
-        startActivity(PersonalInfoPage);
+        // Parse fit files and add to database
+        try {
+            ProcessBuilder pb = new ProcessBuilder("python", "path/to/convert.py");
+            Process p = pb.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Now that the python file has been run and data should be in the database, refresh the page
+        Intent WelcomeActivity = new Intent(WelcomeActivity.this, WelcomeActivity.class);
+        WelcomeActivity.putExtra("name", name);
+        WelcomeActivity.putExtra("uid", uid);
+        finish();
+        startActivity(WelcomeActivity);
     }
 
     public float parseTime(String timeString) {

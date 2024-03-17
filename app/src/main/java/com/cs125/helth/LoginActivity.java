@@ -63,11 +63,11 @@ public class LoginActivity extends AppCompatActivity {
             String name = cursor.getString(cursor.getColumnIndex("name"));
             int uid = cursor.getInt(cursor.getColumnIndex("uid"));
 
-            Intent PersonalInfoPage = new Intent(LoginActivity.this, WelcomeActivity.class);
-            PersonalInfoPage.putExtra("name", name);
-            PersonalInfoPage.putExtra("uid", uid);
+            Intent WelcomeActivity = new Intent(LoginActivity.this, WelcomeActivity.class);
+            WelcomeActivity.putExtra("name", name);
+            WelcomeActivity.putExtra("uid", uid);
             finish();
-            startActivity(PersonalInfoPage);
+            startActivity(WelcomeActivity);
         } else {
             Toast.makeText(LoginActivity.this, "Invalid login. Please try again.", Toast.LENGTH_SHORT).show();
         }
