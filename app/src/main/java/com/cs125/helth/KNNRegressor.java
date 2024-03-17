@@ -37,7 +37,7 @@ public class KNNRegressor {
         }
 
         // Sort the distances list
-        Collections.sort(distances, Comparator.comparingDouble(DataPoint::getValue));
+        Collections.sort(distances, Comparator.comparingDouble(DataPoint::getHeartRate));
 
         // Select the k nearest neighbors
         return distances.subList(0, k);

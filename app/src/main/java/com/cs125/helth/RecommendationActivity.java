@@ -18,6 +18,7 @@ import java.util.List;
 
 public class RecommendationActivity extends AppCompatActivity {
 
+    Spinner difficultySpinner;
     List<DataPoint> distanceData;
     List<DataPoint> timeData;
 
@@ -30,7 +31,7 @@ public class RecommendationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recommendation);
 
         // Get buttons
-        Spinner difficultySpinner = findViewById(R.id.difficulty_spinner);
+        difficultySpinner = findViewById(R.id.difficulty_spinner);
 
         Button back = (Button) findViewById(R.id.back_button);
         back.setOnClickListener(view -> back());
@@ -61,20 +62,6 @@ public class RecommendationActivity extends AppCompatActivity {
             distanceData.add(new DataPoint(heart_rate, distance));
             timeData.add(new DataPoint(heart_rate, time_num));
 
-            // Difficulty scaling
-            String difficulty = difficultySpinner.getSelectedItem().toString();
-
-            switch (difficulty) {
-                case "Easy":
-                    diff_scaling = 0.75;
-                    break;
-                case "Medium":
-                    diff_scaling = 1.0;
-                    break;
-                case "Hard":
-                    diff_scaling = 1.25;
-                    break;
-            }
         }
         average_heart_rate = heartrate_sum /10;
         cursor.close();
@@ -89,7 +76,20 @@ public class RecommendationActivity extends AppCompatActivity {
     public void calculate() {
         KNNRegressor distanceKNN = new KNNRegressor(distanceData, 3);
         KNNRegressor timeKNN = new KNNRegressor(timeData, 3);
+        // Difficulty scaling
+        String difficulty = difficultySpinner.getSelectedItem().toString();
 
+        switch (difficulty) {
+            case "Easy":
+                diff_scaling = 0.25;
+                break;
+            case "Medium":
+                diff_scaling = 1.0;
+                break;
+            case "Hard":
+                diff_scaling = 2;
+                break;
+        }
         double target_heart_rate = average_heart_rate * diff_scaling;
         double predictedDistance = distanceKNN.predict(target_heart_rate);
         double predictedTime = timeKNN.predict(target_heart_rate);
