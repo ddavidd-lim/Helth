@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class GoalsActivity extends AppCompatActivity {
 
@@ -33,14 +34,28 @@ public class GoalsActivity extends AppCompatActivity {
     }
 
     public void next() {
-        finish();
-        Intent WeeksPage = new Intent(GoalsActivity.this, WelcomeActivity.class);
-        startActivity(WeeksPage);
+        Intent intent = getIntent();
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper.openDatabase();
+        long uid = databaseHelper.insertUser(intent.getStringExtra("name"), intent.getStringExtra("email"), intent.getStringExtra("password"));
+        if (uid != -1) {
+            Intent WeeksPage = new Intent(GoalsActivity.this, WelcomeActivity.class);
+            finish();
+            WeeksPage.putExtra("name", intent.getStringExtra("name"));
+            WeeksPage.putExtra("uid", uid);
+            startActivity(WeeksPage);
+        } else {
+            Toast.makeText(GoalsActivity.this, "Failed to register. Please try again.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void back() {
         finish();
         Intent PersonalInfoPage = new Intent(GoalsActivity.this, PersonalInfoActivity.class);
+        Intent intent = getIntent();
+        PersonalInfoPage.putExtra("name", intent.getStringExtra("name"));
+        PersonalInfoPage.putExtra("email", intent.getStringExtra("email"));
+        PersonalInfoPage.putExtra("password", intent.getStringExtra("password"));
         startActivity(PersonalInfoPage);
     }
 }

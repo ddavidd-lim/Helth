@@ -59,6 +59,10 @@ public class PersonalInfoActivity extends AppCompatActivity {
     public void next() {
         finish();
         Intent GoalsPage = new Intent(PersonalInfoActivity.this, GoalsActivity.class);
+        Intent intent = getIntent();
+        GoalsPage.putExtra("name", intent.getStringExtra("name"));
+        GoalsPage.putExtra("email", intent.getStringExtra("email"));
+        GoalsPage.putExtra("password", intent.getStringExtra("password"));
         startActivity(GoalsPage);
     }
 

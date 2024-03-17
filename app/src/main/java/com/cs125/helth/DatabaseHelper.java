@@ -1,5 +1,6 @@
 package com.cs125.helth;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -29,20 +30,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void copyDatabaseFromAssets() {
+        File dbFile = context.getDatabasePath(DB_NAME);
+
+        if (dbFile.exists()) {
+            Log.d(TAG, "Database already exists. No need to copy from assets.");
+            return;
+        }
+
         try {
-            File dbFile = context.getDatabasePath(DB_NAME);
-            Log.d(TAG, "Database path: " + dbFile.getAbsolutePath());
-
-            // Log the contents of the AssetManager
-            String[] assetList = context.getAssets().list("");
-            Log.d(TAG, "Assets in AssetManager:");
-            for (String asset : assetList) {
-                Log.d(TAG, "Asset: " + asset);
-            }
-
             Log.d(TAG, "Copying database from assets...");
             AssetManager assetManager = context.getAssets();
-            Log.d(TAG, "Opening database from assets: " + DB_NAME);
             InputStream inputStream = assetManager.open(DB_NAME);
             OutputStream outputStream = new FileOutputStream(dbFile);
             byte[] buffer = new byte[1024];
@@ -86,25 +83,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Not needed for this example
     }
 
-//    public boolean checkUserExist(String username, String password) {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Log.d("DatabaseHelper", "Database path: " + db.getPath());
-//
-//        Cursor tableCheckCursor = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='users'", null);
-//        if (tableCheckCursor.getCount() <= 0) {
-//            Log.d("DatabaseHelper", "Table 'users' does not exist");
-//            tableCheckCursor.close();
-//            return false;
-//        }
-//        tableCheckCursor.close();
-//
-//        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE email=? AND password=?", new String[]{username, password});
-//        if (cursor.getCount() > 0) {
-//            cursor.close();
-//            return true;
-//        } else {
-//            cursor.close();
-//            return false;
-//        }
-//    }
+    public long insertUser(String newName, String newEmail, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", newName);
+        contentValues.put("email", newEmail);
+        contentValues.put("password", newPassword);
+
+        long uid = db.insert("users", null, contentValues);
+
+        return uid;
+    }
 }
