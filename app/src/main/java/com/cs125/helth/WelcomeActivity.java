@@ -105,7 +105,7 @@ public class WelcomeActivity extends AppCompatActivity {
         finish();
         // Parse fit files and add to database
         try {
-            ProcessBuilder pb = new ProcessBuilder("python", "path/to/convert.py");
+            ProcessBuilder pb = new ProcessBuilder("python", "convert.py");
             Process p = pb.start();
         } catch (Exception e) {
             e.printStackTrace();
