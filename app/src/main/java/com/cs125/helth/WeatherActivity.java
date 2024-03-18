@@ -1,3 +1,5 @@
+package com.cs125.helth;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +17,14 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 public class WeatherActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
@@ -24,16 +34,14 @@ public class WeatherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_recommendation);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         locationCallback = new LocationCallback() {
             @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
+            public void onLocationResult(@NonNull LocationResult locationResult) {
+
                 for (Location location : locationResult.getLocations()) {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
@@ -64,33 +72,33 @@ public class WeatherActivity extends AppCompatActivity {
                             URL forecastURL = new URL(newURL);
 
                             try {
-                                HttpURLConnection connection = (HttpURLConnection) newURL.openConnection();
-                                connection.setRequestMethod("GET");
+                                HttpURLConnection connection_2 = (HttpURLConnection) forecastURL.openConnection();
+                                connection_2.setRequestMethod("GET");
 
-                                int responseCode = connection.getResponseCode();
-                                if (responseCode == HttpURLConnection.HTTP_OK) {
-                                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                                    String inputLine;
-                                    StringBuilder response = new StringBuilder();
+                                int responseCode_2 = connection_2.getResponseCode();
+                                if (responseCode_2 == HttpURLConnection.HTTP_OK) {
+                                    BufferedReader in_2 = new BufferedReader(new InputStreamReader(connection_2.getInputStream()));
+                                    String inputLine_2;
+                                    StringBuilder response_2 = new StringBuilder();
 
-                                    while ((inputLine = in.readLine()) != null) {
-                                        response.append(inputLine);
+                                    while ((inputLine_2 = in_2.readLine()) != null) {
+                                        response_2.append(inputLine_2);
                                     }
-                                    in.close();
+                                    in_2.close();
 
-                                    String jsonResponse = response.toString();
+                                    String jsonResponse_2 = response_2.toString();
 
-                                    int weatherStart = jsonResponse.indexOf("\"number\": 1,");
+                                    int weatherStart = jsonResponse_2.indexOf("\"number\": 1,");
 
-                                    int tempStart = jsonResponse.indexOf("\"temperature\":", weatherStart);
-                                    int tempEnd = jsonResponse.indexOf("\"temperatureUnit\":", weatherStart);
-                                    int temperature = Integer.parseInt(jsonResponse.substring(tempStart + 15, tempEnd - 17));
+                                    int tempStart = jsonResponse_2.indexOf("\"temperature\":", weatherStart);
+                                    int tempEnd = jsonResponse_2.indexOf("\"temperatureUnit\":", weatherStart);
+                                    int temperature = Integer.parseInt(jsonResponse_2.substring(tempStart + 15, tempEnd - 17));
 
-                                    int fcStart = jsonResponse.indexOf("\"shortForecast\":", weatherStart);
-                                    int fcEnd = jsonResponse.indexOf("\"detailedForecast\":", weatherStart);
-                                    String forecast = jsonResponse.substring(fcStart + 18, fcEnd - 18);
+                                    int fcStart = jsonResponse_2.indexOf("\"shortForecast\":", weatherStart);
+                                    int fcEnd = jsonResponse_2.indexOf("\"detailedForecast\":", weatherStart);
+                                    String forecast = jsonResponse_2.substring(fcStart + 18, fcEnd - 18);
 
-                                    // this should hold the temperature (deg F) and forecast (Sunny, Cloudy, etc)
+                                    // this holds the temperature (deg F) and forecast (Sunny, Cloudy, etc)
                                     System.out.println(temperature);
                                     System.out.println(forecast);
 
@@ -136,6 +144,9 @@ public class WeatherActivity extends AppCompatActivity {
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(30000); // Update location every 30 seconds
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 }
